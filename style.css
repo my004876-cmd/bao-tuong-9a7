@@ -1,0 +1,1227 @@
+/* --- 1. NỀN TẢNG CHUNG & CHUẨN HOÁ SCROLL SNAP --- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory; /* Bắt buộc cuộn dừng chuẩn 100% từng Section */
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #0A0A0A;
+    color: #FFFFFF;
+    overflow-x: hidden;
+}
+
+/* Khóa cuộn trang khi chưa mở khóa */
+body.locked {
+    overflow: hidden !important;
+    height: 100vh;
+}
+
+/* CHUẨN HOÁ KHUNG HÌNH THEO TỪNG THIẾT BỊ (VIEWPORT FLEXIBLE) */
+section {
+    width: 100vw;
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    box-sizing: border-box;
+}
+
+/* --- SECTION 1: HERO SECTION --- */
+.hero-section {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+}
+
+.slideshow-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.slide img, 
+.slide video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 10, 0.70);
+    z-index: 2;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 3;
+    padding: 20px;
+    max-width: 800px;
+}
+
+.hero-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: 3px;
+    color: #FFFFFF;
+    text-shadow: 0 0 20px rgba(212, 255, 36, 0.4);
+    margin-bottom: 10px;
+}
+
+.hero-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #E2E8F0;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+}
+
+#btn-unlock {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    padding: 16px 36px;
+    border-radius: 50px;
+    border: none;
+    cursor: not-allowed;
+    transition: all 0.4s ease;
+}
+
+.btn-disabled {
+    background-color: #334155;
+    color: #94A3B8;
+    opacity: 0.6;
+}
+
+.btn-active {
+    background-color: #D4FF24 !important;
+    color: #0A0A0A !important;
+    opacity: 1 !important;
+    cursor: pointer !important;
+    box-shadow: 0 0 25px rgba(212, 255, 36, 0.8);
+    animation: pulse 1.5s infinite;
+}
+
+.btn-active:hover {
+    transform: scale(1.05);
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+/* --- SECTION 2: DYNAMIC CAROUSEL --- */
+.quote-section {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4vh 2vw;
+    position: relative;
+    transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    perspective: 1000px;
+}
+
+.quote-section.theme-vietnam { background-color: #E6D2B7; color: #520108; }
+.quote-section.theme-western { background-color: #A5A79A; color: #1A1A1A; }
+.quote-section.theme-eastasia { background-color: #520108; color: #E6D2B7; }
+
+.quote-container {
+    max-width: 850px;
+    width: 90%;
+    text-align: center;
+    z-index: 2;
+}
+
+.section-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.section-subtitle {
+    font-size: 0.95rem;
+    opacity: 0.8;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
+.carousel-wrapper {
+    position: relative;
+    min-height: 360px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.quote-card {
+    position: absolute;
+    width: 100%;
+    max-width: 680px;
+    border-radius: 28px;
+    padding: 40px 30px;
+    opacity: 0;
+    transform: scale(0.85) rotateY(-15deg) translateY(30px);
+    transition: all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    backdrop-filter: blur(10px);
+}
+
+.quote-section.theme-vietnam .quote-card {
+    background: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(82, 1, 8, 0.15);
+    box-shadow: 0 20px 40px rgba(82, 1, 8, 0.12);
+}
+
+.quote-section.theme-western .quote-card {
+    background: rgba(240, 242, 235, 0.75);
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.quote-section.theme-eastasia .quote-card {
+    background: rgba(30, 0, 4, 0.65);
+    border: 1px solid rgba(230, 210, 183, 0.2);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+}
+
+.quote-card.active {
+    opacity: 1;
+    transform: scale(1) rotateY(0deg) translateY(0);
+    pointer-events: auto;
+}
+
+.card-tag {
+    display: inline-block;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 6px 18px;
+    border-radius: 30px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+}
+
+.theme-vietnam .card-tag { background: #520108; color: #E6D2B7; }
+.theme-western .card-tag { background: #1A1A1A; color: #A5A79A; }
+.theme-eastasia .card-tag { background: #E6D2B7; color: #520108; }
+
+.quote-text {
+    font-size: 1.7rem;
+    font-weight: 800;
+    line-height: 1.5;
+    margin-bottom: 18px;
+}
+
+.quote-text.english-serif {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-style: italic;
+}
+
+.quote-text.chinese-font {
+    font-family: "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-size: 2rem;
+    color: #E6D2B7;
+}
+
+.quote-meaning {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    opacity: 0.85;
+    margin-bottom: 20px;
+}
+
+.btn-audio-quote {
+    font-weight: 700;
+    font-size: 0.9rem;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.theme-vietnam .btn-audio-quote { background: #520108; color: #E6D2B7; }
+.theme-western .btn-audio-quote { background: #1A1A1A; color: #A5A79A; }
+
+.carousel-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+.control-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    font-size: 1.5rem;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+}
+
+.theme-vietnam .control-btn { background: #520108; color: #E6D2B7; }
+.theme-western .control-btn { background: #1A1A1A; color: #A5A79A; }
+.theme-eastasia .control-btn { background: #E6D2B7; color: #520108; }
+
+.carousel-dots {
+    display: flex;
+    gap: 12px;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    opacity: 0.3;
+    transition: all 0.4s ease;
+    cursor: pointer;
+}
+
+.theme-vietnam .dot { background: #520108; }
+.theme-western .dot { background: #1A1A1A; }
+.theme-eastasia .dot { background: #E6D2B7; }
+
+.dot.active {
+    opacity: 1;
+    transform: scale(1.5);
+}
+
+/* --- SECTION 3: DARK MODE & SEQUENCE NEON TỰ ĐỘNG --- */
+.twist-section {
+    position: relative;
+    z-index: 10;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000 !important;
+    color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4vh 2vw;
+}
+
+.twist-container {
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.emotion-text-box {
+    min-height: 100px;
+    margin-bottom: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.emotion-text-box.fade-out {
+    opacity: 0;
+    transform: translateY(-20px);
+    pointer-events: none;
+    display: none;
+}
+
+.typewriter-content {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.8;
+    color: #F8FAFC;
+    max-width: 850px;
+}
+
+.cursor {
+    font-size: 1.8rem;
+    color: #D4FF24;
+    animation: blink 0.7s infinite;
+    margin-left: 5px;
+}
+
+.hero-unseen-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.hero-unseen-grid.hidden-grid {
+    opacity: 0;
+    transform: translateY(40px);
+    pointer-events: none;
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-unseen-grid.show-grid {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.section-3-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #FFFFFF;
+    letter-spacing: 3px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px rgba(212, 255, 36, 0.4);
+}
+
+.cards-wrapper-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    width: 100%;
+}
+
+.unseen-card {
+    background: rgba(20, 20, 20, 0.95);
+    border: 1px solid rgba(212, 255, 36, 0.2);
+    border-radius: 24px;
+    padding: 35px 25px;
+    text-align: center;
+    transition: all 0.5s ease;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+/* ĐÈN NEON KHI ĐẾN LƯỢT PHÁT GIỌNG ĐỌC TỰ ĐỘNG */
+.unseen-card.neon-active {
+    border-color: #D4FF24;
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 0 35px rgba(212, 255, 36, 0.5);
+    background: rgba(35, 35, 35, 1);
+}
+
+.card-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+}
+
+.card-role {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #D4FF24;
+    margin-bottom: 12px;
+}
+
+.card-desc {
+    font-size: 0.95rem;
+    color: #CBD5E0;
+    line-height: 1.6;
+}
+
+/* --- SECTION 4: 28 HỌC SINH ĐA SẮC MÀU & PHÓNG TO CHI TIẾT --- */
+.students-section {
+    position: relative;
+    z-index: 10;
+    width: 100vw;
+    min-height: 100vh;
+    height: auto !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    background-color: #F4EFEA; /* Nền be kem nhạt mặc định */
+    color: #1A1A1A;
+    padding: 60px 20px 100px 20px;
+    box-sizing: border-box;
+    transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    scroll-snap-align: start;
+    scroll-snap-stop: normal;
+}
+
+.students-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+    position: relative;
+}
+
+/* Nút mũi tên Quay lại */
+.btn-back-grid {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 800;
+    background: rgba(0, 0, 0, 0.15);
+    color: #FFFFFF;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    padding: 10px 22px;
+    border-radius: 30px;
+    cursor: pointer;
+    margin-bottom: 25px;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(6px);
+}
+
+.btn-back-grid:hover {
+    background: rgba(0, 0, 0, 0.3);
+    transform: translateX(-5px);
+}
+
+.btn-back-grid.hidden-btn {
+    display: none;
+}
+
+.students-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: #520108;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    transition: color 0.5s ease;
+}
+
+.students-subtitle {
+    font-size: 0.95rem;
+    color: #666666;
+    margin-bottom: 40px;
+    font-weight: 600;
+    transition: color 0.5s ease;
+}
+
+/* Lưới 4 cột mặc định */
+.students-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+    align-items: start;
+    transition: all 0.5s ease;
+}
+
+/* Ô Thẻ Học Sinh Phong Cách Thủy Tinh */
+.student-card {
+    background: rgba(255, 255, 255, 0.75);
+    border: 2px solid rgba(0, 0, 0, 0.08);
+    border-radius: 24px;
+    padding: 25px 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    backdrop-filter: blur(8px);
+    user-select: none;
+}
+
+.student-card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.12);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.student-avatar-circle {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    font-size: 1.8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 12px auto;
+    color: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+}
+
+.student-card:hover .student-avatar-circle {
+    transform: scale(1.1) rotate(6deg);
+}
+
+.student-short-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 800;
+}
+
+/* Nội dung chi tiết ẩn ban đầu */
+.student-details {
+    display: none;
+    margin-top: 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding-top: 20px;
+    text-align: left;
+}
+
+/* KHÔNG GIAN KHI BẤM VÀO 1 HỌC SINH (PHÓNG TO & NỔI BẬT) */
+.student-card.card-expanded {
+    grid-column: 1 / -1; /* Mở rộng toàn bộ chiều rộng lưới */
+    max-width: 680px;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.95) !important;
+    padding: 35px 30px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25) !important;
+    transform: scale(1.02);
+}
+
+.student-card.card-expanded .student-details {
+    display: block;
+}
+
+.student-card.card-expanded .student-avatar-circle {
+    width: 80px;
+    height: 80px;
+    font-size: 2.2rem;
+}
+
+.student-card.card-expanded .student-short-name {
+    font-size: 1.8rem;
+    margin-bottom: 5px;
+}
+
+/* Khung hiển thị Video */
+.student-video-container {
+    width: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 18px;
+    background: #000000;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.student-video-container video {
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Subtitle Lời Chúc (Nhận màu textColor cá tính) */
+.subtitle-box {
+    padding: 5px 0;
+}
+
+.sub-line {
+    font-size: 0.98rem;
+    line-height: 1.6;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+.sub-original {
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.sub-en {
+    font-style: italic;
+    opacity: 0.9;
+}
+
+.sub-vi {
+    font-weight: 600;
+    opacity: 0.95;
+}
+
+/* KHI MỘT CARD MỞ RỘNG -> ẨN TẤT CẢ CARD KHÁC */
+.student-card.card-hidden {
+    display: none !important;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .students-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+@media (max-width: 600px) {
+    .students-grid { grid-template-columns: repeat(2, 1fr); }
+    .student-card.card-expanded { padding: 25px 18px; }
+}
+.student-card.card-expanded {
+    grid-column: 1 / -1;
+    width: 92vw !important; /* Mở rộng thẻ to 92% màn hình */
+    max-width: 1100px !important; /* Giới hạn tối đa trên màn hình cực lớn */
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.96) !important;
+    padding: 30px 40px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35) !important;
+    transform: scale(1);
+    border-radius: 28px;
+}
+
+/* --- XẾP ICON VÀ TÊN NẰM TRÊN CÙNG 1 HÀNG --- */
+.student-card.card-expanded .student-avatar-circle {
+    display: inline-flex;
+    vertical-align: middle;
+    width: 60px;
+    height: 60px;
+    font-size: 1.8rem;
+    margin: 0 15px 0 0 !important; /* Đẩy tên sang bên phải icon */
+}
+
+.student-card.card-expanded .student-short-name {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 2rem; /* Tăng cỡ chữ tên cho cân đối với thẻ to */
+    margin: 0;
+}
+
+/* Đảm bảo khung nội dung phía dưới (Video & Subtitle) cách đều hàng trên */
+.student-card.card-expanded .student-details {
+    margin-top: 25px;
+}
+.students-title.hidden-title,
+.students-subtitle.hidden-title {
+    display: none !important;
+}
+
+/* --- SECTION 4: CARD CHI TIẾT TINH TẾ & KHÔNG VIỀN ĐEN VIDEO --- */
+.students-section {
+    position: relative;
+    z-index: 10;
+    width: 100vw;
+    min-height: 100vh;
+    height: auto !important;
+    background-color: #F4EFEA;
+    color: #1A1A1A;
+    padding: 40px 20px;
+    box-sizing: border-box;
+    transition: background-color 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.students-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.students-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #520108;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    transition: color 0.5s ease;
+}
+
+.students-subtitle {
+    font-size: 0.9rem;
+    color: #666666;
+    margin-bottom: 30px;
+    font-weight: 600;
+}
+
+.students-title.hidden-title,
+.students-subtitle.hidden-title {
+    display: none !important;
+}
+
+.students-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    width: 100%;
+    align-items: start;
+}
+
+.student-card {
+    background: rgba(255, 255, 255, 0.75);
+    border: 2px solid rgba(0, 0, 0, 0.08);
+    border-radius: 20px;
+    padding: 20px 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+    backdrop-filter: blur(8px);
+    position: relative;
+}
+
+.student-card:hover {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.student-avatar-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    font-size: 1.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 10px auto;
+    color: #FFFFFF;
+}
+
+.student-short-name {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
+.student-details {
+    display: none;
+    margin-top: 15px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    padding-top: 15px;
+    text-align: left;
+}
+
+/* KHÔNG GIAN THẺ PHÓNG TO NẰM GỌN 1 MÀN HÌNH */
+.student-card.card-expanded {
+    grid-column: 1 / -1;
+    width: 85vw !important;
+    max-width: 850px !important;
+    margin: 0 auto;
+    background: rgba(255, 255, 255, 0.96) !important;
+    padding: 20px 30px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25) !important;
+    border-radius: 24px;
+    position: relative;
+    cursor: default;
+}
+
+/* NÚT QUAY LAI DẠNG ICON NẰM Ở GÓC TRÁI TRÊN Ô TRẮNG */
+.btn-card-back {
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(0, 0, 0, 0.06);
+    color: #333333;
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 5;
+}
+
+.btn-card-back:hover {
+    background: rgba(0, 0, 0, 0.15);
+    transform: scale(1.1);
+}
+
+.student-card.card-expanded .student-avatar-circle {
+    display: inline-flex;
+    vertical-align: middle;
+    width: 45px;
+    height: 45px;
+    font-size: 1.4rem;
+    margin: 0 12px 0 0 !important;
+}
+
+.student-card.card-expanded .student-short-name {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+/* KHUNG VIDEO DÀI RỘNG & KHÔNG CÓ VIỀN ĐEN NỀN */
+.student-video-container {
+    width: 100%;
+    max-height: 48vh; /* Vừa vặn tầm mắt */
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    background: transparent !important; /* Xóa nền đen thừa */
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+.student-video-container video {
+    width: 100%;
+    max-height: 48vh;
+    object-fit: cover; /* Video lấp đầy khung rực rỡ, không bị khoảng đen hai bên */
+    display: block;
+    border-radius: 16px;
+}
+
+.sub-line {
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 4px;
+    white-space: pre-line;
+}
+
+.student-card.card-hidden {
+    display: none !important;
+}
+
+/* ==========================================
+   SECTION 5: HŨ THỦY TINH BỐC THĂM HIGH-TECH
+   ========================================== */
+.gacha-section {
+    position: relative;
+    width: 100vw;
+    min-height: 100vh;
+    background: radial-gradient(circle at 50% 30%, #1e1b4b 0%, #0f172a 100%);
+    color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 60px 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+    z-index: 10;
+}
+
+/* Nền sao lấp lánh */
+.gacha-stars-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+    background-size: 30px 30px;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.gacha-container {
+    position: relative;
+    max-width: 750px;
+    margin: 0 auto;
+    z-index: 2;
+}
+
+.gacha-badge {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #F59E0B;
+    background: rgba(245, 158, 11, 0.15);
+    border: 1px solid rgba(245, 158, 11, 0.4);
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 15px;
+    backdrop-filter: blur(5px);
+}
+
+.gacha-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #FFF 0%, #FCD34D 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+    letter-spacing: 1px;
+}
+
+.gacha-subtitle {
+    font-size: 1rem;
+    color: #94A3B8;
+    margin-bottom: 40px;
+    font-weight: 500;
+}
+
+/* Hũ Thủy Tinh & Hiệu Ứng Phát Sáng */
+.jar-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
+.jar-glow {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140px; height: 140px;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.35) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: pulseGlow 3s infinite ease-in-out;
+}
+
+@keyframes pulseGlow {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+    50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+}
+
+.jar-icon {
+    font-size: 7rem;
+    position: relative;
+    z-index: 2;
+    filter: drop-shadow(0 15px 25px rgba(0, 0, 0, 0.5));
+    transition: transform 0.3s ease;
+}
+
+.sparkle {
+    position: absolute;
+    z-index: 3;
+    pointer-events: none;
+    animation: floatSparkle 2.5s infinite ease-in-out alternate;
+}
+
+.sp-1 { top: -10px; left: -10px; font-size: 1.8rem; animation-delay: 0s; }
+.sp-2 { top: 20px; right: -15px; font-size: 1.4rem; animation-delay: 0.7s; }
+.sp-3 { bottom: 10px; left: -20px; font-size: 1.6rem; animation-delay: 1.4s; }
+
+@keyframes floatSparkle {
+    from { transform: translateY(0) scale(0.8) rotate(0deg); opacity: 0.5; }
+    to { transform: translateY(-15px) scale(1.2) rotate(20deg); opacity: 1; }
+}
+
+.jar-wrapper.shake .jar-icon {
+    animation: shakeJar 0.6s ease-in-out infinite;
+}
+
+@keyframes shakeJar {
+    0%, 100% { transform: rotate(0deg) scale(1); }
+    20% { transform: rotate(-15deg) scale(1.1); }
+    40% { transform: rotate(15deg) scale(1.1); }
+    60% { transform: rotate(-10deg) scale(1.1); }
+    80% { transform: rotate(10deg) scale(1.1); }
+}
+
+/* Nút Bốc Thăm Sang Trọng */
+.btn-draw {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+    color: #FFFFFF;
+    border: none;
+    padding: 16px 40px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(245, 158, 11, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.btn-draw:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 15px 40px rgba(245, 158, 11, 0.6);
+}
+
+/* Thẻ Kết Quả Thử Thách Thủy Tinh (Glassmorphism Card) */
+.gacha-result.hidden-result {
+    display: none;
+}
+
+.challenge-card {
+    position: relative;
+    background: rgba(255, 255, 255, 0.95);
+    color: #0F172A;
+    padding: 40px 35px;
+    border-radius: 28px;
+    max-width: 580px;
+    margin: 0 auto;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(251, 191, 36, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    animation: popUpChallenge 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+}
+
+@keyframes popUpChallenge {
+    from { transform: scale(0.6) translateY(30px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.challenge-tag {
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #B45309;
+    background: #FEF3C7;
+    padding: 6px 18px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+}
+
+.challenge-text {
+    font-size: 1.35rem;
+    color: #1E293B;
+    margin: 25px 0 30px 0;
+    line-height: 1.6;
+    font-weight: 800;
+}
+
+.card-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn-primary {
+    font-family: 'Montserrat', sans-serif;
+    background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+    color: #FFFFFF;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 30px;
+    font-weight: 800;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.3);
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    background: #334155;
+    box-shadow: 0 12px 25px rgba(15, 23, 42, 0.4);
+}
+
+.btn-secondary {
+    font-family: 'Montserrat', sans-serif;
+    background: transparent;
+    color: #64748B;
+    border: 2px solid #E2E8F0;
+    padding: 12px 22px;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-secondary:hover {
+    background: #F8FAFC;
+    color: #1E293B;
+    border-color: #CBD5E1;
+}
+
+/* ==========================================
+   MÀN HÌNH KẾT (END SCREEN LUXURY)
+   ========================================== */
+.end-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+    text-align: center;
+    padding: 30px 20px;
+    box-sizing: border-box;
+}
+
+.end-screen.hidden-screen {
+    display: none;
+}
+
+.end-screen-backdrop {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(15, 23, 42, 0.96);
+    backdrop-filter: blur(15px);
+}
+
+.end-content {
+    position: relative;
+    z-index: 2;
+    max-width: 850px;
+    animation: fadeInEnd 0.8s ease-out;
+}
+
+@keyframes fadeInEnd {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.end-heart-badge {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 800;
+    color: #EC4899;
+    background: rgba(236, 72, 153, 0.15);
+    border: 1px solid rgba(236, 72, 153, 0.3);
+    padding: 6px 18px;
+    border-radius: 20px;
+    margin-bottom: 15px;
+}
+
+.end-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.3rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, #FCD34D 0%, #F59E0B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+}
+
+.end-quote {
+    font-size: 1.05rem;
+    font-style: italic;
+    color: #E2E8F0;
+    margin-bottom: 25px;
+}
+
+/* Khung Ảnh Lớp Phát Sáng Tri Ân */
+.class-photo-frame {
+    position: relative;
+    display: inline-block;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    border: 3px solid rgba(255, 255, 255, 0.2);
+}
+
+.class-photo-frame img {
+    max-width: 80vw;
+    max-height: 52vh;
+    display: block;
+    object-fit: cover;
+    border-radius: 17px;
+}
+
+.copyright {
+    margin-top: 25px;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    color: #64748B;
+    font-weight: 700;
+}

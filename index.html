@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Tường Digital 9A7 - Ngôn Ngữ Của Tri Ân</title>
+    <!-- Google Fonts: Montserrat & Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <!-- Link file CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- SECTION 1: HERO SECTION -->
+    <section id="section-1" class="hero-section">
+        <!-- Background Slideshow (Ảnh & Video xen kẽ) -->
+        <div class="slideshow-container" id="slideshow-container">
+            <!-- Video 1 -->
+            <div class="slide active">
+                <video id="slide-vid-1" src="assets/videos/slide-video-1.mp4" autoplay muted playsinline></video>
+            </div>
+            <!-- Video 2 -->
+            <div class="slide">
+                <video id="slide-vid-2" src="assets/videos/slide-video-2.mp4" autoplay muted playsinline></video>
+            </div>
+            <div class="slide">
+                <video id="slide-vid-3" src="assets/videos/slide-video-3.mp4" autoplay muted playsinline></video>
+            </div>
+            <!-- Các slide ảnh sẽ được JavaScript tự động thêm vào đây -->
+        </div>
+
+        <!-- Layer phủ tối bề mặt giúp chữ và nút nổi bật -->
+        <div class="hero-overlay"></div>
+
+        <!-- Nội dung chính Section 1 -->
+        <div class="hero-content">
+            <h1 class="hero-title">HỒ SƠ 9A7</h1>
+            <p class="hero-subtitle">NGÔN NGỮ CỦA TRI ÂN & SỰ TRƯỞNG THÀNH</p>
+
+            <!-- Trình phát Audio ẩn (Tự động phát khi tải trang) -->
+            <audio id="intro-audio" autoplay>
+                <source src="assets/audios/intro.mp3" type="audio/mpeg">
+                Trình duyệt của bạn không hỗ trợ phát âm thanh.
+            </audio>
+
+            <!-- Nút bấm tương tác (Ban đầu bị khóa mờ) -->
+            <button id="btn-unlock" class="btn-disabled" disabled>
+                🔒 ĐANG GIẢI MÃ AUDIO 9A7...
+            </button>
+        </div>
+    </section>
+
+    <!-- SECTION 2: CAROUSEL THƠ CA & TRÍCH DẪN TRI ÂN -->
+    <section id="section-2" class="quote-section theme-vietnam">
+        <!-- Nhạc nền nhè nhẹ cho Section 2 -->
+        <audio id="sec2-bg-music" loop src="assets/audios/sec2-bg-music.mp3"></audio>
+
+        <div class="quote-container">
+            <h2 class="section-title">NHỮNG DÒNG CHỮ GỬI NĂM THÁNG</h2>
+            <p class="section-subtitle">Chạm để cảm nhận không gian văn hóa tri âm</p>
+
+            <!-- Khối Carousel 3D -->
+            <div class="carousel-wrapper">
+                <!-- Thẻ 1: Việt Nam (#E6D2B7) -->
+                <div class="quote-card active" data-index="0" data-theme="theme-vietnam">
+                    <span class="card-tag">🇻🇳 Hồn Thơ Việt</span>
+                    <blockquote class="quote-text">
+                        "Muốn sang thì bắc cầu Kiều<br>Muốn con hay chữ thì yêu lấy thầy."
+                    </blockquote>
+                    <p class="quote-meaning">Lời dạy nghìn đời của dân tộc về lòng tôn sư trọng đạo – kim chỉ nam cho mỗi học sinh 9A7 trên con đường trưởng thành.</p>
+                </div>
+
+                <!-- Thẻ 2: Phương Tây (#A5A79A) -->
+                <div class="quote-card" data-index="1" data-theme="theme-western">
+                    <span class="card-tag">🇬🇧 Triết Lý Phương Tây</span>
+                    <blockquote class="quote-text english-serif">
+                        "A good teacher is like a candle — it consumes itself to light the way for others."
+                    </blockquote>
+                    <p class="quote-meaning">Người thầy như ngọn nến lặng lẽ đốt cháy chính mình để soi sáng con đường tri thức cho bao thế hệ học trò.</p>
+                </div>
+
+                <!-- Thẻ 3: Á Đông - Tiếng Trung (#520108) -->
+                <div class="quote-card" data-index="2" data-theme="theme-eastasia" data-auto-audio="assets/audios/quote-3.mp3">
+                    <span class="card-tag">🌏 Ngạn Ngữ Á Đông</span>
+                    <blockquote class="quote-text chinese-font">
+                        "一日为师，终身为父。<br>桃李不言，下自成蹊。"
+                    </blockquote>
+                    <p class="quote-meaning">Một ngày là thầy, cả đời ghi nhớ. Sự tận tụy thầm lặng của thầy cô luôn tỏa hương nuôi dưỡng 9A7.</p>
+                </div>
+            </div>
+
+            <!-- Điều khiển Carousel -->
+            <div class="carousel-controls">
+                <button id="prev-quote" class="control-btn">‹</button>
+                <div class="carousel-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+                <button id="next-quote" class="control-btn">›</button>
+            </div>
+        </div>
+
+        <audio id="quote-player"></audio>
+    </section>
+
+    <!-- SECTION 3: CÚ TWIST TRI ÂN ẨN DANH -->
+    <section id="section-3" class="twist-section">
+        <div class="twist-container">
+            <!-- Khối gõ chữ cảm xúc -->
+            <div class="emotion-text-box">
+                <p id="typewriter-text" class="typewriter-content"></p>
+                <span class="cursor">|</span>
+            </div>
+
+            <!-- Giao diện 2 nửa (Sequence phát giọng & Đèn Neon tự động) -->
+            <div id="unseen-cards-grid" class="hero-unseen-grid hidden-grid">
+                <h2 class="section-3-title">NHỮNG MẢNH GHÉP ẨN DANH</h2>
+                
+                <div class="cards-wrapper-2col">
+                    <!-- Nửa trái: Bác Bảo Vệ -->
+                    <div id="card-bao-ve" class="unseen-card" data-audio="assets/audios/sec3-bao-ve.mp3">
+                        <div class="card-icon">🛡️</div>
+                        <h3 class="card-role">Người Gác Cổng Thầm Lặng</h3>
+                        <p class="card-desc">Cảm ơn Bác vì những nụ cười chào buổi sáng, những lần bao dung giữ xe và sự an tâm Bác dành cho 9A7 suốt những năm tháng qua.</p>
+                    </div>
+
+                    <!-- Nửa phải: Cô Lao Công -->
+                    <div id="card-lao-cong" class="unseen-card" data-audio="assets/audios/sec3-lao-cong.mp3">
+                        <div class="card-icon">🧹</div>
+                        <h3 class="card-role">Người Giữ Bình Yên Lớp Học</h3>
+                        <p class="card-desc">Cảm ơn Cô vì lớp học luôn sạch bóng mỗi giờ đến trường, vì những giọt mồ hôi lặng lẽ đằng sau không gian học tập của 9A7.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Trình phát giọng nói tự động Section 3 -->
+        <audio id="twist-voice-player"></audio>
+    </section>
+
+    <!-- SECTION 4: 28 MẢNH GHÉP 9A7 (ĐỔI THEME 2 MÀU CÁ TÍNH & PHÓNG TO CHI TIẾT) -->
+    <section id="section-4" class="students-section">
+        <div class="students-container">
+            <h2 id="sec4-main-title" class="students-title">28 MẢNH GHÉP 9A7</h2>
+            <p id="sec4-sub-title" class="students-subtitle">Chạm vào từng ô học sinh để lắng nghe thông điệp cá tính & đổi sắc màu không gian</p>
+
+            <div id="students-grid" class="students-grid">
+                <!-- Data render tự động qua JS -->
+            </div>
+        </div>
+    </section>
+    <!-- SECTION 5: HŨ THỦY TINH BỐC THĂM THỬ THÁCH VUI VỚI CÔ -->
+    <section id="section-5" class="gacha-section">
+        <div class="gacha-stars-bg"></div>
+        <div class="gacha-container">
+            <div class="gacha-badge">🎲 MINI GAME INTERACTIVE</div>
+            <h2 class="gacha-title">HŨ THỦY TINH THỬ THÁCH</h2>
+            <p class="gacha-subtitle">Chạm nhẹ để mở ra mảnh giấy thử thách bất ngờ giữa cô và tập thể 9A7!</p>
+
+            <!-- Hũ thủy tinh và nút tương tác -->
+            <div id="gacha-box" class="gacha-box">
+                <div class="jar-wrapper">
+                    <div class="jar-glow"></div>
+                    <div class="jar-icon">🏺</div>
+                    <div class="sparkle sp-1">✨</div>
+                    <div class="sparkle sp-2">⭐</div>
+                    <div class="sparkle sp-3">🌟</div>
+                </div>
+                <div class="gacha-btn-wrapper">
+                    <button id="btn-draw" class="btn-draw">
+                        <span>🎲 RÚT THỬ THÁCH BẤT NGỜ</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Khung Thẻ Thử Thách (Hiệu ứng Popup) -->
+            <div id="gacha-result" class="gacha-result hidden-result">
+                <div class="challenge-card">
+                    <div class="card-glass-shine"></div>
+                    <span class="challenge-tag">🔥 THỬ THÁCH 9A7</span>
+                    <h3 id="challenge-text" class="challenge-text">"Cô hãy chọn ra 1 bạn quậy nhất 9A7 và lên chụp chung 1 kiểu ảnh tạo dáng bá đạo!"</h3>
+                    <div class="card-actions">
+                        <button id="btn-draw-again" class="btn-secondary">🔄 Rút thẻ khác</button>
+                        <button id="btn-to-endscreen" class="btn-primary">MỞ LỜI KẾT 9A7 ✨</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MÀN HÌNH KẾT (END SCREEN LUXURY OVERLAY) -->
+    <div id="end-screen" class="end-screen hidden-screen">
+        <div class="end-screen-backdrop"></div>
+        <div class="end-content">
+            <div class="end-heart-badge">❤️ LỜI CẢM ƠN TỪ 9A7</div>
+            <h1 class="end-title">CẢM ƠN CÔ VÌ ĐÃ LÀ MỘT PHẦN CỦA 9A7!</h1>
+            <p class="end-quote">"Thanh xuân của chúng em rực rỡ nhất vì luôn có cô đồng hành và bao dung."</p>
+            <div style="margin-top: 20px;">
+                <button id="btn-back-from-endscreen" class="btn-secondary" style="color: #FFFFFF; border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.1);">
+                    ← QUAY LẠI BỐC THĂM
+                </button>
+            </div>
+            <p class="copyright">BÁO TƯỜNG DIGITAL 9A7 • NIÊN KHÓA 2022 - 2026</p>
+        </div>
+    </div>
+
+    <!-- Link file JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
