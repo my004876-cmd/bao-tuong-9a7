@@ -537,7 +537,7 @@ section {
 /* Lưới 4 cột mặc định */
 .students-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     width: 100%;
     align-items: start;
@@ -762,7 +762,7 @@ section {
 
 .students-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     width: 100%;
     align-items: start;
@@ -1225,6 +1225,7 @@ section {
     color: #64748B;
     font-weight: 700;
 }
+
 
 /* ==========================================
    CẤU HÌNH GIAO DIỆN RIÊNG CHO ĐIỆN THOẠI (MOBILE)
