@@ -63,9 +63,9 @@ document.addEventListener("DOMContentLoaded", function () {
             currentVideo.currentTime = 0;
 
             if (currentSlide === 1) {
-                currentVideo.playbackRate = 1.3; // Video 1 -> Tốc độ 1.3
+                currentVideo.playbackRate = 2; // Video 1 -> Tốc độ 1.3
             } else if (currentSlide === 2) {
-                currentVideo.playbackRate = 1.3; // Video 2 -> Tốc độ 1.3
+                currentVideo.playbackRate = 2; // Video 2 -> Tốc độ 1.3
             } else if (currentSlide === 3) {
                 currentVideo.playbackRate = 0.7; // Video 3 -> Tốc độ 0.7
             } else {
