@@ -298,7 +298,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (cardBaoVe) cardBaoVe.classList.add("neon-active");
         await playAudioPromise("assets/audios/sec3-bao-ve.mp3");
 
-        // BƯỚC 2: Tắt Bảo Vệ -> Sáng Neon Cô Lao Công
+        // BƯỚC 2: Tắt Bảo Vệ -> Sáng Neon Thầy Cô Lao Thầy Công
         if (cardBaoVe) cardBaoVe.classList.remove("neon-active");
         if (cardLaoCong) cardLaoCong.classList.add("neon-active");
         await playAudioPromise("assets/audios/sec3-lao-cong.mp3");
@@ -314,12 +314,13 @@ document.addEventListener("DOMContentLoaded", function () {
     
     // Mảng cấu hình 28 học sinh (Bạn tự tay nhập bgColor & textColor thoải mái tại đây)
     const studentsConfig = [
-        { 
-            id: 1, name: "Tuệ Anh", bgColor: "#92afcd", textColor: "#557699", 
-            video: "assets/videos/student-1.mp4", 
-            subOriginal: "🇰🇷 \"선생님, 구아칠의 예쁜 모습 항상 기억해 주세요! 사랑합니다!", 
-            subEn: "Teachers, please always remember the beautiful moments of 9A7! We love you!", 
-            subVi: "Thầy cô ơi, xin hãy luôn nhớ về những hình ảnh đẹp đẽ của 9A7 nhé! Chúng em yêu thầy cô!" 
+        {
+            name: "Trà My",
+            bgColor: "#b0cdef", textColor: "#6883a3",
+            video: "assets/videos/student-1.mp4",
+            subOriginal: "🇬🇧 Thank you for always standing by our side and supporting us. You make every day at school a wonderful memory. 🇨🇳 老师， 感谢您的付出。 9A7 永远爱您！", 
+            subEn: "Thank you for always standing by our side and supporting us. You make every day at school a wonderful memory. Teacher, thank you for your dedication. 9A7 loves you forever!", 
+            subVi: "Cảm ơn Thầy Cô vì đã luôn sát cánh và hỗ trợ chúng em. Thầy Cô khiến mỗi ngày đến trường đều là kỷ niệm tuyệt đẹp. Thầy Cô ơi, cảm ơn sự tận tụy của Thầy Cô, 9A7 mãi yêu Thầy Cô!" 
         },
         { 
             id: 2, name: "Gia Phát", bgColor: "#C5908E", textColor: "#844f4d", 
@@ -331,7 +332,8 @@ document.addEventListener("DOMContentLoaded", function () {
         { 
             id: 3, name: "Châu Anh", bgColor: "#04172b", textColor: "#04172b", 
             video: "assets/videos/student-3.mp4",  
-            subEn: "Thank you so much for everything from 9A7!", 
+            subOriginal: "Thank you so much for everything from 9A7!", 
+            subEn: "",
             subVi: "Cảm ơn thầy cô vì tất cả, chúng em yêu 9A7!" 
         },
         { 
@@ -508,6 +510,23 @@ document.addEventListener("DOMContentLoaded", function () {
             subOriginal: "🇻🇳 \"Kính chúc các thầy cô luôn rạng rỡ và có một mùa Nhà giáo thật ý nghĩa cùng 9A7!\"", 
             subEn: "Wishing teachers to always shine bright and have a meaningful Teacher's Day with 9A7!", 
             subVi: "" 
+        },
+        { 
+            id: 29, name: "Tuệ Anh", bgColor: "#92afcd", textColor: "#557699", 
+            video: "assets/videos/student-29.mp4", 
+            subOriginal: "🇰🇷 \"선생님, 구아칠의 예쁜 모습 항상 기억해 주세요! 사랑합니다!", 
+            subEn: "Teachers, please always remember the beautiful moments of 9A7! We love you!", 
+            subVi: "Thầy cô ơi, xin hãy luôn nhớ về những hình ảnh đẹp đẽ của 9A7 nhé! Chúng em yêu thầy cô!" 
+        },
+        { 
+            id: 30, 
+            name: "Tập thể 9A7", 
+            bgColor: "#4d4d4d", 
+            textColor: "#000000", 
+            video: "assets/images/class-typography.png", // Đường dẫn file ảnh typography vừa tạo
+            subOriginal: "🇬🇧 \"Thank you for creating an unforgettable youth for 9A7. Wherever we go, we will always be one family!\"", 
+            subEn: "", 
+            subVi: "Cảm ơn Thầy Cô vì đã dệt nên một thanh xuân rực rỡ cho 9A7. Dù mai này tung cánh muôn phương, chúng ta vẫn mãi là một gia đình!" 
         }
     ];
 
@@ -545,6 +564,15 @@ document.addEventListener("DOMContentLoaded", function () {
             card.className = "student-card";
             card.style.borderColor = st.textColor;
 
+            // 1. Kiểm tra file là ảnh (.png, .jpg, .jpeg, .webp) hay video (.mp4...)
+            const isImage = st.video.endsWith(".png") || st.video.endsWith(".jpg") || st.video.endsWith(".jpeg") || st.video.endsWith(".webp");
+
+            // 2. Tạo thẻ HTML tương ứng cho Media (Ảnh hoặc Video)
+            const mediaTag = isImage 
+                ? `<img src="${st.video}" alt="${st.name}" style="width:100%; height:auto; max-height:48vh; object-fit:contain; border-radius:16px;">`
+                : `<video src="${st.video}" controls playsinline preload="metadata" style="width:100%; max-height:48vh; object-fit:cover; border-radius:16px;"></video>`;
+
+            // 3. Render giao diện Card
             card.innerHTML = `
                 <!-- Nút Mũi tên góc trái trên (Chỉ hiển thị khi mở rộng) -->
                 <button class="btn-card-back" title="Quay lại" style="display: none;">←</button>
@@ -553,8 +581,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 <h3 class="student-short-name" style="color: ${st.textColor};">${st.name}</h3>
                 
                 <div class="student-details">
-                    <div class="student-video-container">
-                        <video src="${st.video}" controls playsinline preload="metadata"></video>
+                    <div class="student-video-container" style="background: transparent;">
+                        ${mediaTag}
                     </div>
                     <div class="subtitle-box">
                         ${st.subOriginal ? `<p class="sub-line sub-original" style="color: ${st.textColor};">${st.subOriginal}</p>` : ''}
@@ -589,6 +617,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const currentVid = this.querySelector("video");
                 if (currentVid) currentVid.play().catch(() => {});
+
+                // Khi bấm Quay lại (backBtn):
+                const v = c.querySelector("video");
+                if (v) v.pause();
             });
 
             // SK NÚT QUAY LẠI TRONG Ô TRẮNG
@@ -625,9 +657,29 @@ document.addEventListener("DOMContentLoaded", function () {
     // SECTION 5: XỬ LÝ RÚT THẺ THỬ THÁCH VUI & END SCREEN
     // ==========================================
     const challengesList = [
-        "Cô hãy chọn ra 1 bạn quậy nhất 9A7 và lên chụp chung 1 kiểu ảnh tạo dáng bá đạo!",
-        "Đố cô đọc đúng tên và biệt danh của 3 bạn ngồi bàn cuối mà không nhìn danh sách!",
-        "Cô được quyền yêu cầu tập thể 9A7 thực hiện 1 điều ước ngay lập tức ạ!"
+        "Thầy Cô hãy chọn ra 1 bạn quậy nhất 9A7 và lên chụp chung 1 kiểu ảnh tạo dáng bá đạo!",
+        "Thầy Cô hãy yêu cầu tập thể 9A7 thực hiện 1 điều ước ngay lập tức ạ!",
+        "Cả lớp 9A7 sẽ cùng thả tim và hô to 'Chúng em yêu cô!' trong 5 giây cho cô quay clip!",
+        "Thầy Cô hãy chọn 3 bạn bất kỳ lên hát tặng cô một đoạn trong bài hát cô thích nhất!",
+        "Thầy Cô hãy chọn 1 bạn nhảy giỏi nhất lớp lên hướng dẫn cô thực hiện 1 động tác 'trend' cực chill!",
+        "Thầy Cô hãy cùng lớp tạo dáng 'thả tim' để chụp một bức ảnh kỷ niệm để đời!",
+        "Cả lớp 9A7 xin phép được tặng cô một tràng vỗ tay kéo dài liên tục 15 giây thật nồng nhiệt!",
+        "Thầy Cô hãy chỉ định 2 bạn bất kỳ lên bóp vai và massage tay cho cô trong 3 phút!",
+        "Thầy Cô hãy kể lại một kỷ niệm đáng yêu hoặc buồn cười nhất mà cô nhớ về 9A7!",
+        "Đặc quyền gọi tên 1 bạn học sinh bất kỳ lên phát biểu cảm nghĩ về cô trong 30 giây!",
+        "Thầy Cô hãy chọn ra bạn có nụ cười rực rỡ nhất lớp và chụp chung một tấm hình kỷ niệm!",
+        "Thầy Cô hãy yêu cầu 1 học sinh hát 1 bài bất kỳ để khuấy động không khí!",
+        "Mời cô chỉ định 2 bạn lên làm tư thế ghép hình trái tim lớn để cô đứng ở giữa chụp ảnh!",
+        "Thầy Cô hãy chọn ra bạn học sinh mà cô thấy có nhiều tiến bộ nhất để khen ngợi trước lớp!",
+        "Cả lớp 9A7 sẽ đồng thanh gửi đến cô một lời hứa quyết tâm thi đạt kết quả cao nhất!",
+        "Thầy Cô hãy chọn một bạn có giọng nói ấm áp nhất lên gửi lời chúc sức khỏe đến cô và gia đình!",
+        "Mời cô chụp một bức ảnh 'selfie góc rộng' cùng toàn bộ thành viên 9A7!",
+        "Thầy Cô hãy chọn ra bạn có nét tính cách giống cô nhất khi còn đi học!",
+        "Thầy Cô hãy nhận 3 điều ước nhỏ từ 3 bạn học sinh ngồi ở 3 dãy khác nhau!",
+        "Mời cô chọn 1 bạn có chiều cao ấn tượng nhất lớp để chụp ảnh so sánh chiều cao vui vẻ!",
+        "Thầy Cô được nhận một bản nhạc nhẹ nhàng do 1 bạn trong lớp mở/thể hiện tặng cô!",
+        "Thầy Cô hãy chỉ định 2 bạn vui tính nhất lớp lên làm trò hề hoặc diễn hài ngắn cho cô cười!",
+        "Cả lớp sẽ cùng hô to câu: 'Thầy Cô là người tuyệt vời nhất trong lòng 9A7!'",
     ];
 
     const btnDraw = document.getElementById("btn-draw");
