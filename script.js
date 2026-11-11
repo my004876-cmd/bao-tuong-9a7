@@ -19,15 +19,23 @@ document.addEventListener("DOMContentLoaded", function () {
         "10.png",
     ];
 
-    const slideshowContainer = document.getElementById("slideshow-container");
-    if (slideshowContainer) {
-        imageList.forEach(imgName => {
-            const slideDiv = document.createElement("div");
-            slideDiv.className = "slide";
-            slideDiv.innerHTML = `<img src="assets/images/${imgName}" alt="Ảnh lớp 9A7">`;
-            slideshowContainer.appendChild(slideDiv);
+    const heroVideos = document.querySelectorAll(".hero-section video");
+    heroVideos.forEach(vid => {
+        vid.addEventListener("error", function () {
+            // Tạo thẻ img dự phòng hiển thị 1.png
+            const fallbackImg = document.createElement("img");
+            fallbackImg.src = "assets/images/1.png";
+            fallbackImg.alt = "Ảnh lớp 9A7 dự phòng";
+            fallbackImg.style.width = "100%";
+            fallbackImg.style.height = "100%";
+            fallbackImg.style.objectFit = "cover";
+
+            // Thay thế video bị lỗi bằng ảnh 1.png
+            if (this.parentNode) {
+                this.parentNode.replaceChild(fallbackImg, this);
+            }
         });
-    }
+    });
 
     const slides = document.querySelectorAll(".slide");
     let currentSlide = 0;
