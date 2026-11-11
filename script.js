@@ -7,22 +7,25 @@ document.addEventListener("DOMContentLoaded", function () {
     // SECTION 1: SLIDESHOW & UNLOCK AUDIO
     // ==========================================
     const imageList = [
-        "1.png",
-        "2.png",
-        "3.png",
-        "4.png",
-        "5.png",
-        "6.png",
-        "7.png",
-        "8.png",
-        "9.png",
-        "10.png",
+        "1.png", "2.png", "3.png", "4.png", "5.png",
+        "6.png", "7.png", "8.png", "9.png", "10.png"
     ];
 
+    const slideshowContainer = document.getElementById("slideshow-container");
+    if (slideshowContainer && slideshowContainer.children.length <= 3) {
+        // Giữ lại 3 slide video ban đầu (nếu có), thêm danh sách 10 ảnh vào sau
+        imageList.forEach(imgName => {
+            const slideDiv = document.createElement("div");
+            slideDiv.className = "slide";
+            slideDiv.innerHTML = `<img src="assets/images/${imgName}" alt="Ảnh lớp 9A7">`;
+            slideshowContainer.appendChild(slideDiv);
+        });
+    }
+
+    // Xử lý tự động thay ảnh 1.png nếu Video ở Hero Section bị lỗi mạng/lỗi link
     const heroVideos = document.querySelectorAll(".hero-section video");
     heroVideos.forEach(vid => {
         vid.addEventListener("error", function () {
-            // Tạo thẻ img dự phòng hiển thị 1.png
             const fallbackImg = document.createElement("img");
             fallbackImg.src = "assets/images/1.png";
             fallbackImg.alt = "Ảnh lớp 9A7 dự phòng";
@@ -30,7 +33,6 @@ document.addEventListener("DOMContentLoaded", function () {
             fallbackImg.style.height = "100%";
             fallbackImg.style.objectFit = "cover";
 
-            // Thay thế video bị lỗi bằng ảnh 1.png
             if (this.parentNode) {
                 this.parentNode.replaceChild(fallbackImg, this);
             }
@@ -40,25 +42,50 @@ document.addEventListener("DOMContentLoaded", function () {
     const slides = document.querySelectorAll(".slide");
     let currentSlide = 0;
     let slideTimer = null;
-    const imageSpeed = 1200;
-
-    const vid2 = document.getElementById("slide-vid-2");
-    if (vid2) vid2.playbackRate = 0.7;
+    const standardImageSpeed = 1200; // Tốc độ ảnh thông thường (1.2s)
+    const firstImageSpeed = 1500;    // Tốc độ riêng cho ảnh 1.png (1.5s)
 
     function playCurrentSlide() {
         if (slides.length === 0) return;
+
+        // Xóa trạng thái active của tất cả các slide
         slides.forEach(s => s.classList.remove("active"));
+        if (slideTimer) clearTimeout(slideTimer);
+
         const activeSlide = slides[currentSlide];
         activeSlide.classList.add("active");
 
         const currentVideo = activeSlide.querySelector("video");
+        const currentImg = activeSlide.querySelector("img");
+
         if (currentVideo) {
+            // --- CẤU HÌNH TỐC ĐỘ 3 VIDEO ĐẦU ---
             currentVideo.currentTime = 0;
-            currentVideo.playbackRate = (currentVideo.id === "slide-vid-2") ? 0.7 : 1.0;
+
+            if (currentSlide === 1) {
+                currentVideo.playbackRate = 1.3; // Video 1 -> Tốc độ 1.3
+            } else if (currentSlide === 2) {
+                currentVideo.playbackRate = 1.3; // Video 2 -> Tốc độ 1.3
+            } else if (currentSlide === 3) {
+                currentVideo.playbackRate = 0.7; // Video 3 -> Tốc độ 0.7
+            } else {
+                currentVideo.playbackRate = 1.0;
+            }
+
             currentVideo.play().catch(() => {});
-            currentVideo.onended = function () { nextSlide(); };
+            currentVideo.onended = function () {
+                nextSlide();
+            };
         } else {
-            slideTimer = setTimeout(nextSlide, imageSpeed);
+            // --- CẤU HÌNH THỜI GIAN HIỂN THỊ ẢNH ---
+            let duration = standardImageSpeed;
+
+            // Nếu là ảnh 1.png (Slide đầu tiên dạng ảnh) -> Chạy 1.5s (1500ms)
+            if (currentImg && currentImg.src.includes("1.png")) {
+                duration = firstImageSpeed;
+            }
+
+            slideTimer = setTimeout(nextSlide, duration);
         }
     }
 
@@ -67,6 +94,8 @@ document.addEventListener("DOMContentLoaded", function () {
         currentSlide = (currentSlide + 1) % slides.length;
         playCurrentSlide();
     }
+
+    // Bắt đầu chạy Slideshow
     playCurrentSlide();
 
     const introAudio = document.getElementById("intro-audio");
