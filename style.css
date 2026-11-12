@@ -1890,7 +1890,7 @@ section {
     /* Ép khung video thành tỉ lệ DỌC trên điện thoại để lấp đầy màn hình */
     .student-card.card-expanded .student-video-container {
         max-height: none !important;
-        aspect-ratio: 9 / 14 !important;
+        aspect-ratio: 9 / 10 !important;
         margin-bottom: 14px !important;
     }
 
