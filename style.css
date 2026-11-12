@@ -1716,3 +1716,192 @@ section {
         line-height: 1.5 !important;
     }
 }
+
+/* ==========================================
+   CẤU HÌNH GIAO DIỆN RIÊNG CHO ĐIỆN THOẠI (MOBILE)
+   ========================================== */
+.mobile-break {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .mobile-break {
+        display: inline;
+    }
+
+    /* --- SECTION 1: HERO MOBILE --- */
+    .hero-title {
+        font-size: 2.3rem !important;
+        letter-spacing: 1px !important;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.95rem !important;
+        line-height: 1.5 !important;
+        margin-bottom: 28px !important;
+    }
+    
+    #btn-unlock {
+        font-size: 0.95rem !important;
+        padding: 13px 28px !important;
+    }
+
+    /* --- SECTION 2: QUOTE CAROUSEL MOBILE --- */
+    .quote-section {
+        padding: 2vh 4vw !important;
+    }
+
+    .section-title {
+        font-size: 1.5rem !important;
+        margin-bottom: 4px !important;
+    }
+
+    .section-subtitle {
+        font-size: 0.8rem !important;
+        margin-bottom: 15px !important;
+    }
+
+    .carousel-wrapper {
+        min-height: 290px !important;
+    }
+
+    .quote-card {
+        padding: 20px 16px !important;
+        border-radius: 20px !important;
+    }
+
+    .card-tag {
+        font-size: 0.75rem !important;
+        padding: 4px 12px !important;
+        margin-bottom: 10px !important;
+    }
+
+    .quote-text {
+        font-size: 1.15rem !important;
+        line-height: 1.4 !important;
+        margin-bottom: 10px !important;
+    }
+
+    .quote-text.chinese-font {
+        font-size: 1.3rem !important;
+    }
+
+    .quote-meaning {
+        font-size: 0.82rem !important;
+        line-height: 1.4 !important;
+        margin-bottom: 12px !important;
+    }
+
+    .carousel-controls {
+        gap: 15px !important;
+        margin-top: 15px !important;
+    }
+
+    .control-btn {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 1.1rem !important;
+    }
+
+    /* --- SECTION 3: EMOTION & NEON MOBILE (KHÔNG CẮT / KHÔNG TRÀN) --- */
+    .twist-section {
+        height: auto !important;
+        min-height: 100vh !important;
+        max-height: none !important;
+        overflow-y: visible !important;
+        padding: 45px 16px 60px 16px !important;
+    }
+
+    .emotion-text-box {
+        min-height: 160px !important;
+        margin-bottom: 15px !important;
+        padding: 0 10px !important;
+    }
+
+    .typewriter-content {
+        font-size: 1.05rem !important;
+        line-height: 1.6 !important;
+    }
+
+    .section-3-title {
+        font-size: 1.4rem !important;
+        margin-bottom: 20px !important;
+        letter-spacing: 1px !important;
+    }
+
+    .cards-wrapper-2col {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+    }
+
+    .unseen-card {
+        padding: 22px 16px !important;
+        border-radius: 20px !important;
+    }
+
+    .unseen-photo-box {
+        width: 155px !important;
+        height: 155px !important;
+        margin: 8px auto 14px auto !important;
+    }
+
+    .card-icon {
+        font-size: 2rem !important;
+        margin-bottom: 6px !important;
+    }
+
+    .card-role {
+        font-size: 1.1rem !important;
+        margin-bottom: 6px !important;
+    }
+
+    .card-desc {
+        font-size: 0.85rem !important;
+        line-height: 1.5 !important;
+    }
+
+    /* --- SECTION 4: 28 HỌC SINH & VIDEO DỌC MOBILE --- */
+    .students-section {
+        padding: 30px 15px 80px 15px !important;
+    }
+
+    .students-title {
+        font-size: 1.6rem !important;
+    }
+
+    .students-subtitle {
+        font-size: 0.82rem !important;
+        margin-bottom: 20px !important;
+    }
+
+    .students-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 14px !important;
+    }
+
+    /* Khung thẻ phóng to trên mobile */
+    .student-card.card-expanded {
+        width: 92vw !important;
+        padding: 20px 16px !important;
+    }
+
+    /* Ép khung video thành tỉ lệ DỌC trên điện thoại để lấp đầy màn hình */
+    .student-card.card-expanded .student-video-container {
+        max-height: none !important;
+        aspect-ratio: 9 / 14 !important;
+        margin-bottom: 14px !important;
+    }
+
+    .student-card.card-expanded .student-video-container video {
+        width: 100% !important;
+        height: 100% !important;
+        max-height: none !important;
+        object-fit: cover !important;
+    }
+
+    /* --- SECTION 5: GACHA MOBILE --- */
+    .gacha-title {
+        font-size: 1.85rem !important;
+        line-height: 1.35 !important;
+    }
+}
